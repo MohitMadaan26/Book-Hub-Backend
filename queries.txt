@@ -1,0 +1,311 @@
+mutation {
+  login(email: "testuser4@example.com", password: "password123")
+}
+
+query{
+  getUser(email: "testuser2@example.com"){
+    _id,
+    username,
+    email,
+    role,
+  }
+}
+
+mutation {
+  login(email: "testuser1@example.com", password: "password123")
+}
+
+query{
+  getUser(email: "testuser2@example.com"){
+    _id,
+    username,
+    email,
+    role,
+  }
+}
+
+mutation {
+  register(
+    username: "testuser6"
+    email: "testuser6@example.com"
+    password: "password123"
+    # role: "ADMIN"
+  ) {
+    _id
+    username
+    email
+    role
+  }
+}
+
+query{
+getAdminData
+}
+
+mutation CreateBook {
+  createBook(
+     title: "The Essence of Music",
+      authorId: "6735b16bef7e8da65498e6c9",
+      publishedDate: "2017-08-24T00:00:00.000Z",
+      genre: ["Music", "Non-fiction"],
+      summary: "Discover the power and history of music."
+  ) {
+    title
+    publishedDate
+    genre
+    summary
+    addedBy
+  }
+}
+
+mutation{
+  updateBook(
+    id: "6735b5c9f06ddb568b9bb344"
+    title: "Wilderness Escape"
+  ){
+    title
+    addedBy
+    genre
+    publishedDate
+    summary
+    author {
+      name
+    }
+  }
+}
+
+mutation{
+  deleteBook(
+    id: "6735c21969e8e6e5ff33a138")
+}
+
+
+mutation {
+  createAuthor(
+    name: "Emily Harper"
+    birthdate: "1980-03-15T00:00:00.000Z"
+  ) {
+    _id
+    name
+    birthdate
+  }
+}
+
+query{
+  getAuthors {
+    _id
+    name
+    birthdate
+    books {
+      _id
+      title
+      addedBy
+    }
+  }
+}
+
+
+
+
+mutation{
+  createAuthor(
+    birthdate: "2000-09-26T00:00:00.000Z",
+     name: "mohit bhaiya") {
+      _id
+      name
+      birthdate
+      books {
+        genre
+      }
+  }
+}
+
+query {
+  getBook(id: "6735d746f95d514343ea4c82") {
+    _id
+    title
+    publishedDate
+    genre
+    summary
+    author{ 
+      _id
+      name
+      birthdate
+    }
+  }
+}
+
+mutation{
+  updateAuthor(
+    id: "6737b673cb1b4e7ed329ff89"
+    books: ["6735bfc069e8e6e5ff33a11b",
+            ]
+  ) {
+    _id
+    name
+    birthdate
+  }
+}
+
+query{
+  getAuthor(id: "6735b16bef7e8da65498e6c9"){
+    _id
+    name
+    birthdate
+    books {
+      _id
+      title
+      genre
+      addedBy
+      summary
+      publishedDate
+    }
+  }
+}
+
+mutation{
+  deleteAuthor(
+    id: "6737b673cb1b4e7ed329ff89"
+    )
+}
+
+
+
+# Books all pagination and sorting queries
+
+# This query fetches the first page of books, with a default limit of 10, sorted by publishedDate in descending order.
+query {
+  getBooks {
+    _id
+    title
+    author{
+      name
+    }
+    genre
+    publishedDate
+  }
+}
+
+# Fetch the second page of books with a limit of 5 per page.
+query {
+  getBooks(page: 2, limit: 5) {
+    _id
+    title
+    author {
+      _id
+      name
+    }
+    genre
+    publishedDate
+  }
+}
+
+
+# Sort books by title in ascending order.
+query {
+  getBooks(sortBy: "title", sortOrder: "asc") {
+    _id
+    title
+    author {
+      _id
+      name
+    }
+    genre
+    publishedDate
+  }
+}
+
+# Fetch books filtered by the genre argument (e.g., "Drama").
+query {
+  getBooks(filterByGenre: "Drama") {
+    _id
+    title
+    author {
+      _id
+      name
+    }
+    genre
+    publishedDate
+  }
+}
+
+# Fetch books by a specific author (e.g., "Olivia Garcia").
+query {
+  getBooks(filterByAuthor: "Olivia Garcia") {
+    _id
+    title
+    author {
+      _id
+      name
+    }
+    genre
+    publishedDate
+  }
+}
+
+# Fetch books published between January 1, 2000, and December 31, 2010
+query {
+  getBooks(
+    filterByDate: ["2018-12-01", "2021-02-18"] 
+  ) {
+    _id
+    title
+    author {
+      _id
+      name
+    }
+    genre
+    publishedDate
+  }
+}
+
+# Fetch books published after January 1, 2020.
+query {
+  getBooks(filterByDate: ["2020-01-01"]) {
+    _id
+    title
+    author {
+      _id
+      name
+    }
+    genre
+    publishedDate
+  }
+}
+
+
+# Combine Multiple Filters
+# Fetch books authored by "Olivia Garcia", in the []"Mystery", "Adventure", "Drama"] genre, published between "2018-12-18", "2020-05-16", sorted by title in ascending order.
+query {
+  getBooks(
+    filterByAuthor: "Olivia Garcia"
+    filterByGenre: ["Mystery", "Adventure", "Drama"]
+    filterByDate: ["2018-12-18", "2020-05-16"]
+    sortBy: "title"
+    sortOrder: "asc"
+  ) {
+    _id
+    title
+    author {
+      _id
+      name
+    }
+    genre
+    publishedDate
+  }
+}
+
+
+# Fetch all books without any filters, with a limit of 3.
+query {
+  getBooks(limit: 3) {
+    _id
+    title
+    author {
+      _id
+      name
+    }
+    genre
+    publishedDate
+  }
+}
