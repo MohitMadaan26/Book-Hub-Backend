@@ -39,12 +39,11 @@ export const customAuthChecker: AuthChecker<Context> = async (
       return true;
     }
 
-    // Check if the user has one of the required roles
     if (!roles.includes(context.user.role)) {
       throw new Error("Forbidden");
     }
 
-    return true; // User doesn't have the required role
+    return true;
   } catch (error) {
     throw new Error("unauthorized");
   }
